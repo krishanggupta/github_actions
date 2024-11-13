@@ -47,7 +47,6 @@ ipython==8.27.0
 ipywidgets==8.1.2
 jedi==0.19.1
 jinja2==3.1.4
-jpeg==9e
 json5==0.9.6
 jsonschema==4.23.0
 jsonschema-specifications==2023.7.1
@@ -66,7 +65,7 @@ jupyterlab_widgets==3.0.10
 kiwisolver==1.4.4
 krb5==1.20.1
 lcms2==2.12
-lerc==3
+lerc==3.0
 libbrotlicommon==1.0.9
 libbrotlidec==1.0.9
 libbrotlienc==1.0.9
