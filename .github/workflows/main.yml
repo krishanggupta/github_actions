@@ -24,8 +24,6 @@ jobs:
         pip install matplotlib
         pip install seaborn
         pip install yfinance
-        pip install copy  # If you're using 'deepcopy' from the 'copy' module
-        # Add other libraries as needed
 
     - name: Run Python script
       run: python fetching_monthly_intraday_data.py  # Replace with your actual Python script name
