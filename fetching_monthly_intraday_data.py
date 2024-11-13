@@ -150,7 +150,7 @@ print('Symbols',allsymbols)
 print('Tickers',alltickers)
 # Fetch Data
 data = combine_all_data(grouped_start_last_dates,list_of_symbols=alltickers)
-tickers_as_columns=data.stack(level=0,future_stack=False)
+tickers_as_columns=data.stack(level=0)
 for col in tickers_as_columns.columns:
     col_data=tickers_as_columns[col].unstack()
     dict_symbols[col].append(col_data)
