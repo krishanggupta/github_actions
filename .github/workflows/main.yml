@@ -1,0 +1,50 @@
+name: Hourly Python Script Run
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # This runs the workflow every 5 minutes
+
+jobs:
+  run-python:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3  # Use v3 for the latest version
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.12'  # Use the specific version of Python you need
+
+    - name: Install dependencies manually
+      run: |
+        pip install pandas
+        pip install numpy
+        pip install matplotlib
+        pip install seaborn
+        pip install yfinance
+
+
+    - name: Run Python script
+      run: python fetching_monthly_intraday_data.py  # Replace with your actual Python script name
+
+    - name: Check for created folders and commit changes
+      run: |
+        # Check if new folders were created by your Python script
+        if [ -d "new_folder" ]; then  # Replace 'new_folder' with the actual folder name you want to check
+          echo "New folder detected, committing changes"
+          git add .
+          git commit -m "Add new folders created by Python script"
+          git push
+        else
+          echo "No new folders created, skipping commit"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
