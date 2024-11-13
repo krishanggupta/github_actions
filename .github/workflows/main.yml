@@ -25,6 +25,7 @@ jobs:
         pip install seaborn
         pip install yfinance
 
+
     - name: Run Python script
       run: python fetching_monthly_intraday_data.py  # Replace with your actual Python script name
 
