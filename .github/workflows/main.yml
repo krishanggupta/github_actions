@@ -32,7 +32,7 @@ jobs:
     - name: Check for created folders and commit changes
       run: |
         # Check if new folders were created by your Python script
-        if [ -d "new_folder" ]; then  # Replace 'new_folder' with the actual folder name you want to check
+        if [ -d "output_monthly_intraday" ]; then  # Replace 'new_folder' with the actual folder name you want to check
           echo "New folder detected, committing changes"
           git add .
           git commit -m "Add new folders created by Python script"
