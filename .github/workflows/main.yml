@@ -19,7 +19,11 @@ jobs:
 
     - name: Install dependencies
       run: |
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f "requirements.txt" ]; then
+          pip install -r requirements.txt
+        else
+          echo "requirements.txt not found, skipping dependency installation"
+        fi
 
     - name: Run Python script
       run: python fetching_monthly_intraday_data.py  # Replace with your actual Python script name
