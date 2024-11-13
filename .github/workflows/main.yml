@@ -1,0 +1,38 @@
+name: Hourly Python Script Run
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # This runs the workflow every hour
+
+jobs:
+  run-python:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.12'  # Replace with the version of Python you want to use (e.g., '3.9')
+
+    - name: Install dependencies
+      run: |
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Run Python script
+      run: python fetching_monthly_intraday_data.py  # Replace with your actual Python script name
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Commit and push changes
+      run: |
+        git add .
+        git commit -m "Add new folders created by Python script"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
