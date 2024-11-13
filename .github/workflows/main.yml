@@ -10,33 +10,43 @@ jobs:
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v3  # Updated to v3
+      uses: actions/checkout@v3  # Use v3 for the latest version
 
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: '3.12'  # Replace with the version of Python you want to use (e.g., '3.9')
+        python-version: '3.12'  # Use the specific version of Python you need
 
-    - name: Install dependencies
+    - name: Install dependencies manually
       run: |
-        if [ -f "requirements.txt" ]; then
-          pip install -r requirements.txt
-        else
-          echo "requirements.txt not found, skipping dependency installation"
-        fi
+        pip install pandas
+        pip install numpy
+        pip install matplotlib
+        pip install seaborn
+        pip install yfinance
+        pip install os  # os is a built-in library, no need to install it, but you can add it for completeness
+        pip install copy  # If you're using 'deepcopy' from the 'copy' module
+        # Add other libraries as needed
 
     - name: Run Python script
       run: python fetching_monthly_intraday_data.py  # Replace with your actual Python script name
+
+    - name: Check for created folders and commit changes
+      run: |
+        # Check if new folders were created by your Python script
+        if [ -d "output_monthly_intraday" ]; then  # Replace 'new_folder' with the actual folder name you want to check
+          echo "New folder detected, committing changes"
+          git add .
+          git commit -m "Add new folders created by Python script"
+          git push
+        else
+          echo "No new folders created, skipping commit"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Configure Git
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-    - name: Commit and push changes
-      run: |
-        git add .
-        git commit -m "Add new folders created by Python script"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
