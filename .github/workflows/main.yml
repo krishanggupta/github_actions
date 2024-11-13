@@ -1,0 +1,49 @@
+name: Hourly Python Script Run
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # This runs the workflow every 5 minutes
+
+jobs:
+  run-python:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3  # Use v3 for the latest version
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.12'  # Use the specific version of Python you need
+
+    - name: Install dependencies manually
+      run: |
+        pip install pandas
+        pip install numpy
+        pip install matplotlib
+        pip install seaborn
+        pip install yfinance
+
+    - name: Run Python script
+      run: python fetching_monthly_intraday_data.py  # Replace with your actual Python script name
+
+    - name: Configure Git user
+      run: |
+        git config --global user.name "Krishang Gupta"  # Replace with your name
+        git config --global user.email "krishanggupta.kg@gmail.com"  # Replace with your email
+
+    - name: Check if both folders have files and commit changes
+      run: |
+        # Check if both folders exist and contain files
+        if [ -d "output_monthly_intraday" ] && [ "$(ls -A output_monthly_intraday)" ] && \
+           [ -d "output_monthly_intraday_bps_ticks_ZN" ] && [ "$(ls -A output_monthly_intraday_bps_ticks_ZN)" ]; then
+          echo "Both folders with files detected, committing changes"
+          git add .
+          git commit -m "Add new folders and files created by Python script"
+          git push
+        else
+          echo "Both folders do not have files, skipping commit"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
